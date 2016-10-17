@@ -7,7 +7,15 @@ const token = "7DO5OGFBNMKCLW57NIIO5I7CS27RAJCU"
 let conversation = {}
 const actions = {
   send(request, response) {
-    // do something when bot sends message
+    PubnubService.client.publish({
+        message: response.text,
+        channel: conversation.uid,
+      },
+      function (status, response) {
+        // handle status, response
+      })
+    Message.create({body:response.text, conversation:conversation, kind:"outgoing"})
+    console.log(`sending... ${response.text}`)
   },
   findTheatre(request) {
     return new Promise(function (resolve, reject) {
