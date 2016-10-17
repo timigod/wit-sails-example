@@ -11,20 +11,20 @@ module.exports = {
 
     uid: {
       type: 'string',
-      required: 'true'
+      required: true,
+      unique: true,
+      defaultsTo() {
+        return uuid.v4();
+      }
     },
     messages: {
       collection: "message",
       via: "conversation"
     },
-  },
-
-  beforeCreate(values, cb){
-    if (values.uid) {
-      cb();
+    context: {
+      type: 'json',
+      defaultsTo: {}
     }
-    values.uid = uuid.v4()
-    cb();
   }
 };
 

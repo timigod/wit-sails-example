@@ -13,7 +13,7 @@ module.exports = {
     kind: {
       type: 'string',
       required: true,
-      in: ["outgoing", "incoming"]
+      enum: ["outgoing", "incoming"]
     },
     conversation: {
       model: "conversation"

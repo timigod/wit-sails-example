@@ -14,25 +14,38 @@ const actions = {
       function (status, response) {
         // handle status, response
       })
-    Message.create({body:response.text, conversation:conversation, kind:"outgoing"})
+    Message.create({body: response.text, conversation: conversation, kind: "outgoing"})
     console.log(`sending... ${response.text}`)
+    return Promise.resolve();
   },
-  findTheatre(request) {
-    return new Promise(function (resolve, reject) {
-      const {sessionId, context, entities} = request;
-      const showTime = firstEntityValue(entities, "datetime")
-      const movie = firstEntityValue(entities, "movie")
+  findTheatre({context, entities}) {
 
-      if (showTime && movie) {
-        const theatre = searchTheatres(showTime, movie)
-        context.showTime = showTime
-        context.movie = movie
-        context.theatre = theatre
-      } else if (!showTime) {
-        context.missingTime = true
-      }
-      return resolve(context)
-    });
+    const showTime = firstEntityValue(entities, "datetime") || context.showTime
+    const movie = firstEntityValue(entities, "movie") || context.movie
+
+    if (showTime != null) {
+      context.showTime = showTime
+      delete context.missingTime
+    } else {
+      context.missingTime = true
+    }
+
+    if (movie != null){
+      context.movie = movie
+    }
+
+    if (movie && showTime){
+      const theatre = searchTheatres(showTime, movie)
+      context.theatre = theatre
+      var newContext = {}
+    }else{
+      var newContext = context
+    }
+
+    return Conversation.update({uid: conversation.uid}, {context: newContext})
+      .then((updated) => {
+          return Promise.resolve(context)
+        })
   }
 }
 const firstEntityValue = (entities, entity) => {

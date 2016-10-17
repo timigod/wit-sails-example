@@ -4,8 +4,6 @@
  */
 
 const _ = require('lodash');
-let messageConversation = {}
-
 
 module.exports = {
 
@@ -25,24 +23,22 @@ module.exports = {
 
   message(request, response){
     const data = _.pick(request.body, ["uid", "message"])
-    Conversation.find({uid: data.uid})
+    Conversation.findOne({uid: data.uid})
       .then((conversation) => {
-        messageConversation = conversation
         WitService.setConversation(conversation)
+        createIncomingMessage(data.message, conversation).then((message) => {
+          WitService.client.runActions(conversation.uid, message.body, conversation.context)
+          console.log(`SENDING TO WIT: ${message.body}`)
+          response.status(204)
+        })
       })
-
-    createIncomingMessage(data.message).then((message) => {
-      WitService.runActions(messageConversation.uid, message.body)
-      console.log(`SENDING TO WIT: ${message.body}`)
-      response.status(204)
-    })
   }
 };
 
 
-const createIncomingMessage = (body) => {
+const createIncomingMessage = (body, conversation) => {
   return Message.create({
-    conversation: messageConversation,
+    conversation: conversation,
     body: body,
     kind: "incoming"
   })
