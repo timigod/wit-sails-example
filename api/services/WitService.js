@@ -4,7 +4,6 @@
 
 const Wit = require('node-wit').Wit
 const token = "7DO5OGFBNMKCLW57NIIO5I7CS27RAJCU"
-const client = new Wit({accessToken: token, actions})
 let conversation = {}
 const actions = {
   send(request, response) {
@@ -46,10 +45,12 @@ const searchTheatres = (showTime, movie) => {
   return "Random Theatre"
 }
 
+const client = new Wit({accessToken: token, actions})
+
 
 module.exports = {
   client: client,
-  setConversation(id){
-    // set conversation
+  setConversation(conv){
+    conversation = conv
   }
 }
