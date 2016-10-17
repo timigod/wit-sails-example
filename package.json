@@ -1,0 +1,25 @@
+{
+  "name": "chatbot-sails",
+  "private": true,
+  "version": "0.0.0",
+  "description": "a Sails application",
+  "keywords": [],
+  "dependencies": {
+    "include-all": "~0.1.6",
+    "node-wit": "^4.1.0",
+    "rc": "1.0.1",
+    "sails": "~0.12.4",
+    "sails-disk": "~0.10.9"
+  },
+  "scripts": {
+    "debug": "node debug app.js",
+    "start": "node app.js"
+  },
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/timi/chatbot-sails.git"
+  },
+  "author": "timi",
+  "license": ""
+}
