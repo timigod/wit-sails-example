@@ -1,3 +1,5 @@
-# chatbot-sails
+# wit-sails-example
 
-a [Sails](http://sailsjs.org) application
+Example rails application chatbot API for [chunksofco.de](https://chunksofco.de).
+
+[Read the blog post]()
